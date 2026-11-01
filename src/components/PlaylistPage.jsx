@@ -4,11 +4,19 @@ import ProgressBar from "./ProgressBar.jsx";
 import ConfirmBar from "./ConfirmBar.jsx";
 import VideoItem from "./VideoItem.jsx";
 
-export default function PlaylistPage({ playlist, videoNotes, onSaveNote, onToggleVideo, onReset }) {
+export default function PlaylistPage({
+  playlist,
+  videoNotes,
+  onSaveNote,
+  onToggleVideo,
+  onToggleImportantVideo,
+  onReset,
+}) {
   const [confirmingReset, setConfirmingReset] = useState(false);
   const total = playlist.videos.length;
   const done = countCompleted(playlist);
   const completedIds = new Set(playlist.completedVideoIds);
+  const importantIds = new Set(playlist.importantVideoIds ?? []);
 
   return (
     <>
@@ -42,9 +50,11 @@ export default function PlaylistPage({ playlist, videoNotes, onSaveNote, onToggl
             index={index}
             video={video}
             done={completedIds.has(video.videoId)}
+            important={importantIds.has(video.videoId)}
             note={videoNotes[video.videoId] ?? ""}
             onSaveNote={(note) => onSaveNote(video.videoId, note)}
             onToggle={() => onToggleVideo(playlist.id, video.videoId)}
+            onToggleImportant={() => onToggleImportantVideo(playlist.id, video.videoId)}
           />
         ))}
       </ol>

@@ -23,6 +23,7 @@ Deploy `dist/` to Vercel, Netlify or Cloudflare Pages. Set `VITE_YOUTUBE_API_KEY
 
 Progress lives in each browser's localStorage, so it does NOT sync between devices.
 Video notes are also saved in that browser's localStorage and do NOT sync between devices.
+Important markers are saved with playlist progress in that browser's localStorage and do NOT sync between devices.
 
 ## Structure
     src/

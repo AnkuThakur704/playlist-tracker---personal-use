@@ -6,7 +6,8 @@
 //   name: "Arrays",
 //   youtubePlaylistId: "PLxxxx",
 //   videos: [{ videoId, title }],      // exact YouTube order
-//   completedVideoIds: ["videoId", …]  // progress, per playlist
+//   completedVideoIds: ["videoId", …], // progress, per playlist
+//   importantVideoIds: ["videoId", …]  // important markers, per playlist
 // }
 
 export const STORAGE_KEY = "studytrack:v1";
@@ -33,7 +34,16 @@ export function loadPlaylists() {
     raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const data = JSON.parse(raw);
-    return Array.isArray(data) ? data.filter(isValidPlaylist) : [];
+    return Array.isArray(data)
+      ? data
+          .filter(isValidPlaylist)
+          .map((playlist) => ({
+            ...playlist,
+            importantVideoIds: Array.isArray(playlist.importantVideoIds)
+              ? playlist.importantVideoIds
+              : [],
+          }))
+      : [];
   } catch {
     // Corrupt data: keep a copy instead of silently overwriting it.
     try {

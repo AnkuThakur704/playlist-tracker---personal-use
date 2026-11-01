@@ -56,17 +56,35 @@ function NotesDialog({ title, note, onSave, onClose }) {
   );
 }
 
-export default function VideoItem({ index, video, done, note, onSaveNote, onToggle }) {
+export default function VideoItem({
+  index,
+  video,
+  done,
+  important,
+  note,
+  onSaveNote,
+  onToggle,
+  onToggleImportant,
+}) {
   const [notesOpen, setNotesOpen] = useState(false);
 
   return (
-    <li className={done ? "video done" : "video"}>
+    <li className={["video", done && "done", important && "important"].filter(Boolean).join(" ")}>
       <label>
         <input type="checkbox" checked={done} onChange={onToggle} />
         <span className="num">{String(index + 1).padStart(2, "0")}</span>
         <span className="title">{video.title}</span>
       </label>
       <div className="video-actions">
+        <label className={important ? "important-toggle is-important" : "important-toggle"}>
+          <input
+            type="checkbox"
+            checked={important}
+            onChange={onToggleImportant}
+            aria-label={`Mark ${video.title} as important`}
+          />
+          <span>Important</span>
+        </label>
         <button type="button" onClick={() => setNotesOpen(true)} aria-label={`Notes for ${video.title}`}>
           Notes{note.trim() ? " *" : ""}
         </button>

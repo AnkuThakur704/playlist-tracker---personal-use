@@ -8,6 +8,8 @@
   --accent-text: #ffffff;
   --danger: #b3261e;
   --track: #e8e8e3;
+  --important: #a96d00;
+  --important-bg: #fff5d6;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
   color: var(--text);
@@ -25,6 +27,8 @@
     --accent-text: #0e1a13;
     --danger: #f2877f;
     --track: #2b2b28;
+    --important: #f2c45c;
+    --important-bg: #3a311e;
   }
 }
 
@@ -86,7 +90,8 @@ button:focus-visible, .button:focus-visible, a:focus-visible, input:focus-visibl
 .progress-fill { height: 100%; background: var(--accent); }
 
 .video-list { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--border); }
-.video { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+.video { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); border-left: 3px solid transparent; }
+.video.important { border-left-color: var(--important); background: var(--important-bg); }
 .video label { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; padding: 10px 0; cursor: pointer; }
 .video input { width: 18px; height: 18px; flex: none; accent-color: var(--accent); }
 .video .num { color: var(--muted); font-variant-numeric: tabular-nums; flex: none; }
@@ -94,6 +99,9 @@ button:focus-visible, .button:focus-visible, a:focus-visible, input:focus-visibl
 .video.done .title { color: var(--muted); }
 .video-actions { display: flex; align-items: center; gap: 12px; flex: none; }
 .video-actions button { padding: 5px 9px; }
+.important-toggle { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 0.8rem; cursor: pointer; }
+.important-toggle.is-important { color: var(--important); font-weight: 600; }
+.video .important-toggle input { width: 16px; height: 16px; margin: 0; accent-color: var(--important); }
 
 .notes-backdrop {
   position: fixed;

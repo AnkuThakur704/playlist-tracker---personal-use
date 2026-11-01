@@ -90,6 +90,22 @@ export default function App() {
     );
   }
 
+  function toggleImportantVideo(playlistId, videoId) {
+    setPlaylists((current) =>
+      current.map((p) => {
+        if (p.id !== playlistId) return p;
+        const importantVideoIds = p.importantVideoIds ?? [];
+        const important = importantVideoIds.includes(videoId);
+        return {
+          ...p,
+          importantVideoIds: important
+            ? importantVideoIds.filter((id) => id !== videoId)
+            : [...importantVideoIds, videoId],
+        };
+      })
+    );
+  }
+
   function resetProgress(playlistId) {
     setPlaylists((current) =>
       current.map((p) => (p.id === playlistId ? { ...p, completedVideoIds: [] } : p))
@@ -108,6 +124,7 @@ export default function App() {
         videoNotes={videoNotes[openPlaylist.id] ?? {}}
         onSaveNote={(videoId, note) => saveVideoNote(openPlaylist.id, videoId, note)}
         onToggleVideo={toggleVideo}
+        onToggleImportantVideo={toggleImportantVideo}
         onReset={resetProgress}
       />
     );
@@ -122,7 +139,7 @@ export default function App() {
       </header>
       {saveFailed && (
         <p className="notice error" role="alert">
-          Could not save to this browser's storage. Progress will be lost on refresh.
+          Could not save to this browser's storage. Progress and important markers will be lost on refresh.
         </p>
       )}
       <main>{content}</main>
