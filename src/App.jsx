@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { loadPlaylists, savePlaylists, STORAGE_KEY } from "./storage.js";
+import {
+  loadPlaylists,
+  loadVideoNotes,
+  NOTES_STORAGE_KEY,
+  savePlaylists,
+  saveVideoNotes,
+  STORAGE_KEY,
+} from "./storage.js";
 import Dashboard from "./components/Dashboard.jsx";
 import AddPlaylist from "./components/AddPlaylist.jsx";
 import PlaylistPage from "./components/PlaylistPage.jsx";
@@ -18,6 +25,7 @@ export function go(hash) {
 
 export default function App() {
   const [playlists, setPlaylists] = useState(loadPlaylists);
+  const [videoNotes, setVideoNotes] = useState(loadVideoNotes);
   const [route, setRoute] = useState(readRoute);
   const [saveFailed, setSaveFailed] = useState(false);
 
@@ -38,10 +46,24 @@ export default function App() {
   useEffect(() => {
     const onStorage = (event) => {
       if (event.key === STORAGE_KEY) setPlaylists(loadPlaylists());
+      if (event.key === NOTES_STORAGE_KEY) setVideoNotes(loadVideoNotes());
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, []);
+
+  function saveVideoNote(playlistId, videoId, note) {
+    const nextNotes = { ...videoNotes, [playlistId]: { ...videoNotes[playlistId] } };
+    if (note.trim()) {
+      nextNotes[playlistId][videoId] = note;
+    } else {
+      delete nextNotes[playlistId][videoId];
+      if (Object.keys(nextNotes[playlistId]).length === 0) delete nextNotes[playlistId];
+    }
+    if (!saveVideoNotes(nextNotes)) return false;
+    setVideoNotes(nextNotes);
+    return true;
+  }
 
   function addPlaylist(playlist) {
     setPlaylists((current) => [...current, playlist]);
@@ -83,6 +105,8 @@ export default function App() {
     content = (
       <PlaylistPage
         playlist={openPlaylist}
+        videoNotes={videoNotes[openPlaylist.id] ?? {}}
+        onSaveNote={(videoId, note) => saveVideoNote(openPlaylist.id, videoId, note)}
         onToggleVideo={toggleVideo}
         onReset={resetProgress}
       />

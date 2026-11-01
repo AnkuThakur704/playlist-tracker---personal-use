@@ -22,6 +22,7 @@ The key ends up in the built JavaScript, which is why the restrictions matter.
 Deploy `dist/` to Vercel, Netlify or Cloudflare Pages. Set `VITE_YOUTUBE_API_KEY` in the host's environment variables, build command `npm run build`, output directory `dist`.
 
 Progress lives in each browser's localStorage, so it does NOT sync between devices.
+Video notes are also saved in that browser's localStorage and do NOT sync between devices.
 
 ## Structure
     src/
